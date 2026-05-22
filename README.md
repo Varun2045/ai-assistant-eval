@@ -202,7 +202,7 @@ streamlit run app.py
 
 <br>
 
-<img src="assets/Real-Time%20System%20Observability%20Logs.png" alt="System Observability" width="800"/>
+<img src="assets/Real-Time%20System%20Observability%20Log.png" alt="System Observability" width="800"/>
 
 <br><br>
 
