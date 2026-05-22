@@ -697,20 +697,6 @@ chat_mode = st.sidebar.radio(
     ["Simultaneous (Both Models)", f"{clean_oss_name} Only", f"{clean_frontier_name} Only"]
 )
 
-effective_groq_key = st.session_state.get("custom_groq_api_key") or os.getenv("GROQ_API_KEY")
-if not effective_groq_key and chat_mode in ["Simultaneous (Both Models)", f"{clean_oss_name} Only"]:
-    st.sidebar.error("❌ Groq API Key missing. Please provide it above.")
-
-effective_gemini_key = st.session_state.get("custom_gemini_api_key") or os.getenv("GEMINI_API_KEY")
-if not effective_gemini_key and chat_mode in ["Simultaneous (Both Models)", f"{clean_frontier_name} Only"]:
-    st.sidebar.error("❌ Gemini API Key missing. Please provide it above.")
-
-can_chat = True
-if not effective_groq_key and chat_mode in ["Simultaneous (Both Models)", f"{clean_oss_name} Only"]:
-    can_chat = False
-if not effective_gemini_key and chat_mode in ["Simultaneous (Both Models)", f"{clean_frontier_name} Only"]:
-    can_chat = False
-
 # Clear chat buttons
 if st.sidebar.button("🧹 Clear Chat History"):
     st.session_state.llama_messages = []
@@ -776,7 +762,7 @@ with tab1:
     st.markdown("<br>", unsafe_allow_html=True)
     
     # Capture user input
-    if prompt := st.chat_input("Enter your message to the arena...", disabled=not can_chat):
+    if prompt := st.chat_input("Enter your message to the arena..."):
         # Append User message
         st.session_state.llama_messages.append({"role": "user", "content": prompt})
         st.session_state.gemini_messages.append({"role": "user", "content": prompt})
@@ -807,7 +793,9 @@ with tab1:
         # Check if we should query Open Source model
         if chat_mode in ["Simultaneous (Both Models)", f"{clean_oss_name} Only"]:
             effective_groq_key = st.session_state.get("custom_groq_api_key") or os.getenv("GROQ_API_KEY")
-            if effective_groq_key:
+            if not effective_groq_key:
+                st.session_state.llama_messages.append({"role": "assistant", "content": "⚠️ Error: Groq API Key missing. Please put your API key in the sidebar.", "model_name": clean_oss_name})
+            else:
                 with col1:
                     with st.spinner(f"{clean_oss_name} is thinking..."):
                         try:
@@ -861,7 +849,9 @@ with tab1:
         if chat_mode in ["Simultaneous (Both Models)", f"{clean_frontier_name} Only"]:
             # Query Gemini Model
             effective_gemini_key = st.session_state.get("custom_gemini_api_key") or os.getenv("GEMINI_API_KEY")
-            if effective_gemini_key:
+            if not effective_gemini_key:
+                st.session_state.gemini_messages.append({"role": "assistant", "content": "⚠️ Error: Gemini API Key missing. Please put your API key in the sidebar.", "model_name": clean_frontier_name})
+            else:
                 with col2:
                     with st.spinner(f"{clean_frontier_name} is thinking..."):
                         try:
