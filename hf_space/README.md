@@ -3,9 +3,8 @@ title: Qwen Personal Assistant
 emoji: 🦙
 colorFrom: indigo
 colorTo: blue
-sdk: gradio
-sdk_version: 5.0.0
-python_version: 3.10.13
+sdk: streamlit
+sdk_version: 1.36.0
 app_file: app.py
 pinned: false
 ---
