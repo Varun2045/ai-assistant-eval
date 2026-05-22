@@ -723,41 +723,49 @@ with tab1:
     st.markdown("Send messages to both models simultaneously to compare real-time generation speeds, conversational reasoning, and safety refusal mechanisms.")
     
     # UI Columns for side-by-side display
-    col1, col2 = st.columns(2)
+    col1, col2 = None, None
+    if chat_mode == "Simultaneous (Both Models)":
+        col1, col2 = st.columns(2)
+    elif chat_mode == f"{clean_oss_name} Only":
+        col1 = st.container()
+    elif chat_mode == f"{clean_frontier_name} Only":
+        col2 = st.container()
 
     # Column 1: Open Source Model Column
-    with col1:
-        oss_latency_html = ""
-        if st.session_state.latency_oss is not None:
-            oss_latency_html = f"<span class='latency-badge badge-oss'>⚡ {st.session_state.latency_oss:.0f} ms</span>"
-        st.markdown(f"<div><span class='model-tag tag-llama'>🦙 {clean_oss_name} (OSS)</span>{oss_latency_html}</div>", unsafe_allow_html=True)
-        st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
-        if not st.session_state.llama_messages:
-            st.info(f"No messages yet. Say hi to {clean_oss_name} below!")
-        for msg in st.session_state.llama_messages:
-            if msg["role"] == "user":
-                st.markdown(f"<div class='model-tag tag-user'>You</div><div class='chat-bubble bubble-user'>{msg['content']}</div>", unsafe_allow_html=True)
-            else:
-                m_name = msg.get("model_name", clean_oss_name)
-                st.markdown(f"<div class='model-tag tag-llama'>{m_name}</div><div class='chat-bubble bubble-llama'>{msg['content']}</div>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+    if col1 is not None:
+        with col1:
+            oss_latency_html = ""
+            if st.session_state.latency_oss is not None:
+                oss_latency_html = f"<span class='latency-badge badge-oss'>⚡ {st.session_state.latency_oss:.0f} ms</span>"
+            st.markdown(f"<div><span class='model-tag tag-llama'>🦙 {clean_oss_name} (OSS)</span>{oss_latency_html}</div>", unsafe_allow_html=True)
+            st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
+            if not st.session_state.llama_messages:
+                st.info(f"No messages yet. Say hi to {clean_oss_name} below!")
+            for msg in st.session_state.llama_messages:
+                if msg["role"] == "user":
+                    st.markdown(f"<div class='model-tag tag-user'>You</div><div class='chat-bubble bubble-user'>{msg['content']}</div>", unsafe_allow_html=True)
+                else:
+                    m_name = msg.get("model_name", clean_oss_name)
+                    st.markdown(f"<div class='model-tag tag-llama'>{m_name}</div><div class='chat-bubble bubble-llama'>{msg['content']}</div>", unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
 
     # Column 2: Frontier Model Column
-    with col2:
-        frontier_latency_html = ""
-        if st.session_state.latency_frontier is not None:
-            frontier_latency_html = f"<span class='latency-badge badge-frontier'>⚡ {st.session_state.latency_frontier:.0f} ms</span>"
-        st.markdown(f"<div><span class='model-tag tag-gemini'>❆ {clean_frontier_name} (Frontier)</span>{frontier_latency_html}</div>", unsafe_allow_html=True)
-        st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
-        if not st.session_state.gemini_messages:
-            st.info(f"No messages yet. Say hi to {clean_frontier_name} below!")
-        for msg in st.session_state.gemini_messages:
-            if msg["role"] == "user":
-                st.markdown(f"<div class='model-tag tag-user'>You</div><div class='chat-bubble bubble-user'>{msg['content']}</div>", unsafe_allow_html=True)
-            else:
-                m_name = msg.get("model_name", clean_frontier_name)
-                st.markdown(f"<div class='model-tag tag-gemini'>{m_name}</div><div class='chat-bubble bubble-gemini'>{msg['content']}</div>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+    if col2 is not None:
+        with col2:
+            frontier_latency_html = ""
+            if st.session_state.latency_frontier is not None:
+                frontier_latency_html = f"<span class='latency-badge badge-frontier'>⚡ {st.session_state.latency_frontier:.0f} ms</span>"
+            st.markdown(f"<div><span class='model-tag tag-gemini'>❆ {clean_frontier_name} (Frontier)</span>{frontier_latency_html}</div>", unsafe_allow_html=True)
+            st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
+            if not st.session_state.gemini_messages:
+                st.info(f"No messages yet. Say hi to {clean_frontier_name} below!")
+            for msg in st.session_state.gemini_messages:
+                if msg["role"] == "user":
+                    st.markdown(f"<div class='model-tag tag-user'>You</div><div class='chat-bubble bubble-user'>{msg['content']}</div>", unsafe_allow_html=True)
+                else:
+                    m_name = msg.get("model_name", clean_frontier_name)
+                    st.markdown(f"<div class='model-tag tag-gemini'>{m_name}</div><div class='chat-bubble bubble-gemini'>{msg['content']}</div>", unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
         
     st.markdown("<br>", unsafe_allow_html=True)
     
