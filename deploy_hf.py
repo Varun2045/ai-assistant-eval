@@ -52,8 +52,8 @@ if __name__ == "__main__":
         f.write(app_code)
 
     # 2. Write requirements.txt
-    requirements = """gradio
-huggingface_hub<0.26.0
+    requirements = """gradio==4.44.1
+huggingface_hub
 """
     with open(os.path.join(space_dir, "requirements.txt"), "w", encoding="utf-8") as f:
         f.write(requirements)
@@ -65,7 +65,7 @@ emoji: 🦙
 colorFrom: indigo
 colorTo: blue
 sdk: gradio
-sdk_version: 5.0.0
+sdk_version: 4.44.1
 python_version: 3.10.13
 app_file: app.py
 pinned: false
