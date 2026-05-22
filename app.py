@@ -651,6 +651,11 @@ st.sidebar.header("⚙️ Workspace Controls")
 # Model Selectors
 st.sidebar.subheader("🤖 Model Selectors")
 
+chat_mode = st.sidebar.radio(
+    "Chat Arena Mode:",
+    ["Simultaneous (Both Models)", "Open Source (OSS) Only", "Frontier Only"]
+)
+
 oss_models = {
     "🦙 Llama 3.3 70B (Default)": "llama-3.3-70b-versatile",
     "🤖 Qwen 3 32B (Reasoning)": "qwen/qwen3-32b"
@@ -661,41 +666,45 @@ frontier_models = {
     "⚡ Gemini 2.0 Flash": "gemini-2.0-flash"
 }
 
-selected_oss_label = st.sidebar.selectbox("Select Open Source Model:", list(oss_models.keys()))
-selected_oss_model = oss_models[selected_oss_label]
+# Provide defaults so variables are always defined even if hidden
+selected_oss_model = list(oss_models.values())[0]
 clean_oss_name = get_display_name(selected_oss_model)
-
-custom_groq_key = st.sidebar.text_input(
-    "Optional: Custom Groq API Key",
-    value=os.getenv("GROQ_API_KEY", ""),
-    type="password",
-    help="Enter your Groq API key to query Open Source models if not set in .env"
-)
-if custom_groq_key:
-    st.session_state.custom_groq_api_key = custom_groq_key
-else:
-    st.session_state.custom_groq_api_key = ""
-
-selected_frontier_label = st.sidebar.selectbox("Select Frontier Model:", list(frontier_models.keys()))
-selected_frontier_model = frontier_models[selected_frontier_label]
+selected_frontier_model = list(frontier_models.values())[0]
 clean_frontier_name = get_display_name(selected_frontier_model)
 
-custom_gemini_key = st.sidebar.text_input(
-    "Optional: Custom Gemini API Key",
-    value=os.getenv("GEMINI_API_KEY", ""),
-    type="password",
-    help="Enter your Gemini API key to query Frontier models if not set in .env"
-)
-if custom_gemini_key:
-    st.session_state.custom_gemini_api_key = custom_gemini_key
-else:
-    st.session_state.custom_gemini_api_key = ""
+if chat_mode in ["Simultaneous (Both Models)", "Open Source (OSS) Only"]:
+    st.sidebar.markdown("---")
+    selected_oss_label = st.sidebar.selectbox("Select Open Source Model:", list(oss_models.keys()))
+    selected_oss_model = oss_models[selected_oss_label]
+    clean_oss_name = get_display_name(selected_oss_model)
 
-# Dynamic Arena Mode selection based on model names
-chat_mode = st.sidebar.radio(
-    "Chat Arena Mode:",
-    ["Simultaneous (Both Models)", f"{clean_oss_name} Only", f"{clean_frontier_name} Only"]
-)
+    custom_groq_key = st.sidebar.text_input(
+        "Optional: Custom Groq API Key",
+        value=os.getenv("GROQ_API_KEY", ""),
+        type="password",
+        help="Enter your Groq API key to query Open Source models if not set in .env"
+    )
+    if custom_groq_key:
+        st.session_state.custom_groq_api_key = custom_groq_key
+    else:
+        st.session_state.custom_groq_api_key = ""
+
+if chat_mode in ["Simultaneous (Both Models)", "Frontier Only"]:
+    st.sidebar.markdown("---")
+    selected_frontier_label = st.sidebar.selectbox("Select Frontier Model:", list(frontier_models.keys()))
+    selected_frontier_model = frontier_models[selected_frontier_label]
+    clean_frontier_name = get_display_name(selected_frontier_model)
+
+    custom_gemini_key = st.sidebar.text_input(
+        "Optional: Custom Gemini API Key",
+        value=os.getenv("GEMINI_API_KEY", ""),
+        type="password",
+        help="Enter your Gemini API key to query Frontier models if not set in .env"
+    )
+    if custom_gemini_key:
+        st.session_state.custom_gemini_api_key = custom_gemini_key
+    else:
+        st.session_state.custom_gemini_api_key = ""
 
 # Clear chat buttons
 if st.sidebar.button("🧹 Clear Chat History"):
@@ -726,9 +735,9 @@ with tab1:
     col1, col2 = None, None
     if chat_mode == "Simultaneous (Both Models)":
         col1, col2 = st.columns(2)
-    elif chat_mode == f"{clean_oss_name} Only":
+    elif chat_mode == "Open Source (OSS) Only":
         col1 = st.container()
-    elif chat_mode == f"{clean_frontier_name} Only":
+    elif chat_mode == "Frontier Only":
         col2 = st.container()
 
     # Column 1: Open Source Model Column
@@ -789,17 +798,17 @@ with tab1:
             st.error("⚠️ **Input Guardrail Violation**: Your prompt was flagged as unsafe!")
             
             # Log and block for active models
-            if chat_mode in ["Simultaneous (Both Models)", f"{clean_oss_name} Only"]:
+            if chat_mode in ["Simultaneous (Both Models)", "Open Source (OSS) Only"]:
                 st.session_state.llama_messages.append({"role": "assistant", "content": block_reason, "model_name": clean_oss_name})
                 log_chat(user_prompt, clean_oss_name, block_reason, 0.0, "unsafe", "safe (blocked)")
-            if chat_mode in ["Simultaneous (Both Models)", f"{clean_frontier_name} Only"]:
+            if chat_mode in ["Simultaneous (Both Models)", "Frontier Only"]:
                 st.session_state.gemini_messages.append({"role": "assistant", "content": block_reason, "model_name": clean_frontier_name})
                 log_chat(user_prompt, clean_frontier_name, block_reason, 0.0, "unsafe", "safe (blocked)")
             time.sleep(1)
             st.rerun()
 
         # Check if we should query Open Source model
-        if chat_mode in ["Simultaneous (Both Models)", f"{clean_oss_name} Only"]:
+        if chat_mode in ["Simultaneous (Both Models)", "Open Source (OSS) Only"]:
             effective_groq_key = st.session_state.get("custom_groq_api_key") or os.getenv("GROQ_API_KEY")
             if not effective_groq_key:
                 st.session_state.llama_messages.append({"role": "assistant", "content": "⚠️ Error: Groq API Key missing. Please put your API key in the sidebar.", "model_name": clean_oss_name})
@@ -854,7 +863,7 @@ with tab1:
                                 st.session_state.llama_messages.append({"role": "assistant", "content": f"Error generating response: {e}", "model_name": clean_oss_name})
 
         # Check if we should query Frontier model
-        if chat_mode in ["Simultaneous (Both Models)", f"{clean_frontier_name} Only"]:
+        if chat_mode in ["Simultaneous (Both Models)", "Frontier Only"]:
             # Query Gemini Model
             effective_gemini_key = st.session_state.get("custom_gemini_api_key") or os.getenv("GEMINI_API_KEY")
             if not effective_gemini_key:
