@@ -14,8 +14,13 @@
 
 <div align="center">
 
-**[🎯 Try the Live Demo Here!](#)**  
-*(Replace the link above with your hosted Hugging Face Spaces, Modal, or Streamlit Cloud URL)*
+**[📊 Try the Main Evaluation Dashboard Here!](https://ai-assistant-eval-g7wrhuzeaom8p5zunuxgpd.streamlit.app)**  
+*(Hosted on Streamlit Community Cloud)*
+
+<br>
+
+**[🦙 Try the Qwen OSS Assistant Here!](#)**  
+*(Replace the link above with your Hugging Face Space URL after running deploy_hf.py)*
 
 </div>
 
@@ -106,6 +111,20 @@ streamlit run app.py
 | **Guardrails** | `llama-3.1-8b-instant` with zero-shot classification | Extra 150-250ms latency vs. local embedding/regex, but allows complex rule evaluations. |
 | **Judge Model** | `Llama 3.3 70B` (Groq) | Near-frontier level reasoning with higher rate limits and speed than free-tier API models. |
 | **Logging** | Local SQLite (`observability.db`) | Zero-config and zero-cost local setup, but limits horizontal scalability compared to external observability platforms. |
+
+</div>
+
+<div align="center"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></div>
+
+<h3 align="center">💸 OSS Deployment Cost & Latency</h3>
+
+<div align="center">
+
+| OSS Model | Deployment Target | Est. Latency | Est. Cost |
+|-----------|-------------------|--------------|-----------|
+| **Qwen2.5-0.5B-Instruct** | Hugging Face Spaces (Serverless API) | ~0.8s - 1.2s / request | $0.00 (Free Tier) |
+| **Llama-3.1-8B** (Alternative) | Groq API (Cloud) | ~0.3s - 0.5s / request | Free Tier ($0 for eval) |
+| **Qwen2.5-7B-Instruct** (Alternative) | Hugging Face Dedicated Endpoint (T4 GPU) | ~1.5s - 2.5s / request | ~$0.60 / hour |
 
 </div>
 

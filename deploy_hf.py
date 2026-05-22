@@ -51,7 +51,7 @@ if prompt := st.chat_input("Ask Qwen something..."):
                 
                 # Query serverless inference API
                 response = client.chat.completions.create(
-                    model="Qwen/Qwen2.5-7B-Instruct",
+                    model="Qwen/Qwen2.5-0.5B-Instruct",
                     messages=messages,
                     max_tokens=512,
                     temperature=0.7
