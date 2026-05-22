@@ -14,12 +14,12 @@
 
 <div align="center">
 
-**[📊 Try the Main Evaluation Dashboard Here!](https://ai-assistant-eval-g7wrhuzeaom8p5zunuxgpd.streamlit.app)**  
+**📊 Try the Main Evaluation Dashboard Here - https://ai-assistant-eval-g7wrhuzeaom8p5zunuxgpd.streamlit.app**  
 *(Hosted on Streamlit Community Cloud)*
 
 <br>
 
-**[🦙 Try the Qwen OSS Assistant Here!](https://huggingface.co/spaces/VD09/qwen-assistant)**  
+**🦙 Try the Qwen OSS Assistant Here - https://huggingface.co/spaces/VD09/qwen-assistant**  
 *(Hosted on Hugging Face Spaces)*
 
 </div>
