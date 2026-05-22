@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     # 2. Write requirements.txt
     requirements = """gradio
-huggingface_hub
+huggingface_hub<0.26.0
 """
     with open(os.path.join(space_dir, "requirements.txt"), "w", encoding="utf-8") as f:
         f.write(requirements)

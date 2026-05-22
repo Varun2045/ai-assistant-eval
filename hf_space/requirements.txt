@@ -1,2 +1,2 @@
 gradio
-huggingface_hub
+huggingface_hub<0.26.0
