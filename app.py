@@ -931,6 +931,9 @@ with tab1:
                             elif "NOT_FOUND" in err_str or "404" in err_str:
                                 st.error(f"❌ **Model Not Found**: `{selected_frontier_model}` is not available. Please select a different model in the sidebar.")
                                 st.session_state.gemini_messages.append({"role": "assistant", "content": f"Error: '{clean_frontier_name}' is not available. Please select another model.", "model_name": clean_frontier_name})
+                            elif "503" in err_str or "UNAVAILABLE" in err_str or "HIGH DEMAND" in err_str:
+                                st.warning(f"⚠️ **API Overloaded**: Google's servers are currently experiencing high demand. Please try again in a few seconds.")
+                                st.session_state.gemini_messages.append({"role": "assistant", "content": "⚠️ API Error: Google's servers are currently overloaded (503). Please wait a moment and try again.", "model_name": clean_frontier_name})
                             else:
                                 st.error(f"{clean_frontier_name} Error: {e}")
                                 st.session_state.gemini_messages.append({"role": "assistant", "content": f"Error generating response: {e}", "model_name": clean_frontier_name})
