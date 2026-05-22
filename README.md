@@ -122,7 +122,7 @@ streamlit run app.py
 
 | OSS Model | Deployment Target | Est. Latency | Est. Cost |
 |-----------|-------------------|--------------|-----------|
-| **Qwen2.5-0.5B-Instruct** | Hugging Face Spaces (Serverless API) | ~0.8s - 1.2s / request | $0.00 (Free Tier) |
+| **Qwen2.5-72B-Instruct** | Hugging Face Spaces (Serverless API) | ~0.8s - 1.2s / request | $0.00 (Free Tier) |
 | **Llama-3.1-8B** (Alternative) | Groq API (Cloud) | ~0.3s - 0.5s / request | Free Tier ($0 for eval) |
 | **Qwen2.5-7B-Instruct** (Alternative) | Hugging Face Dedicated Endpoint (T4 GPU) | ~1.5s - 2.5s / request | ~$0.60 / hour |
 
