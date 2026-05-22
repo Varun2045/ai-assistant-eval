@@ -663,7 +663,7 @@ oss_models = {
 
 frontier_models = {
     "⚡ Gemini 2.5 Flash (Default)": "gemini-2.5-flash",
-    "⚡ Gemini 2.0 Flash": "gemini-2.0-flash"
+    "⚡ Gemini 3.5 Flash": "gemini-3.5-flash"
 }
 
 # Provide defaults so variables are always defined even if hidden
