@@ -47,9 +47,25 @@
 Python 3.10+
 <br>Streamlit (Interactive Dashboard)
 <br>Groq API (Llama 3.3 70B & 3.1 8B Classifier)
-<br>Gemini API (Gemini 2.5 Flash)
+<br>Gemini API (Gemini 3.5 & 2.5 Flash)
 <br>SQLite (Observability Logging)
 <br>Plotly (Visualizations)
+
+</div>
+
+<div align="center"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></div>
+
+<h3 align="center">🧠 Available Models</h3>
+
+<div align="center">
+
+**🦙 Open Source Models (OSS)**
+<br>🦙 Llama 3.3 70B (Default)
+<br>🤖 Qwen 3 32B (Reasoning)
+
+<br>**⚡ Frontier Models**
+<br>⚡ Gemini 3.5 Flash (SOTA)
+<br>⚡ Gemini 2.5 Flash (Default)
 
 </div>
 
