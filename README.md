@@ -93,59 +93,7 @@ streamlit run app.py
 
 <div align="center"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></div>
 
-<h3 align="center">🏗️ Architecture Design</h3>
 
-**System Interaction Workflow**
-```mermaid
-graph TD
-    User([User in Chat Arena]) --> PromptInput[Prompt Input]
-    
-    subgraph Guardrails [Dual-Layer Safety Guardrails]
-        PromptInput --> InGuard[Input Guardrail: Llama 3.1 8B Classifier]
-        InGuard -- Flagged Unsafe --> BlockIn[Block Input & Record Violation]
-        InGuard -- Flagged Safe --> RunModels[Execute Target Models]
-        
-        RunModels --> ModelOSS[OSS Model: Llama 3.3 70B]
-        RunModels --> ModelFrontier[Frontier Model: Gemini 2.5 Flash]
-        
-        ModelOSS --> OutGuardOSS[Output Guardrail: Llama 3.1 8B Classifier]
-        ModelFrontier --> OutGuardFrontier[Output Guardrail: Llama 3.1 8B Classifier]
-        
-        OutGuardOSS -- Flagged Unsafe --> BlockOutOSS[Block OSS Output & Record Violation]
-        OutGuardOSS -- Flagged Safe --> LogOSS[Render OSS Response]
-        
-        OutGuardFrontier -- Flagged Unsafe --> BlockOutFront[Block Frontier Output & Record Violation]
-        OutGuardFrontier -- Flagged Safe --> LogFront[Render Frontier Response]
-    end
-    
-    subgraph Observability [System Observability Layer]
-        BlockIn --> SQLiteDB[(observability.db)]
-        BlockOutOSS --> SQLiteDB
-        BlockOutFront --> SQLiteDB
-        LogOSS --> SQLiteDB
-        LogFront --> SQLiteDB
-    end
-
-    SQLiteDB --> ObsViewer[Streamlit Audit Logs View]
-```
-
-**LLM-as-a-Judge Evaluation Pipeline**
-```mermaid
-graph LR
-    Config[test_prompts.json] --> Runner[Evaluation Harness]
-    Runner --> OSSModel[Target OSS Model]
-    Runner --> FrontierModel[Target Frontier Model]
-    
-    OSSModel --> OSSGen[OSS Response]
-    FrontierModel --> FrontGen[Frontier Response]
-    
-    OSSGen --> Judge[Impartial Judge: Llama 3.3 70B]
-    FrontGen --> Judge
-    
-    Judge --> Scorecard[Score 1-10 & Reasoning]
-    Scorecard --> CSV[evaluation_results.csv]
-    CSV --> Dashboard[Plotly Category Comparison & Score breakdown]
-```
 
 <div align="center"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></div>
 
