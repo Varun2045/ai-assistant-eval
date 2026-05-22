@@ -26,13 +26,18 @@ def respond(message, history):
     
     messages.append({"role": "user", "content": message})
     
-    response = client.chat.completions.create(
-        model="Qwen/Qwen2.5-0.5B-Instruct",
-        messages=messages,
-        max_tokens=512,
-        temperature=0.7
-    )
-    return response.choices[0].message.content
+    try:
+        response = client.chat.completions.create(
+            model="Qwen/Qwen2.5-0.5B-Instruct",
+            messages=messages,
+            max_tokens=512,
+            temperature=0.7
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        if "503" in str(e) or "loading" in str(e).lower():
+            return "⏳ The Qwen model is currently waking up from sleep to save server costs. Please wait about 30 seconds and send your message again!"
+        return f"⚠️ API Error: {str(e)}"
 
 demo = gr.ChatInterface(
     respond,
