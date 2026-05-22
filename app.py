@@ -715,13 +715,13 @@ if st.sidebar.button("🧹 Clear Chat History"):
 
 # Dynamic metadata presentation
 st.sidebar.markdown("---")
-st.sidebar.markdown(f"""
-### 📋 Active Configuration
-- **OSS Model**:  
-  **{clean_oss_name}** (`{selected_oss_model}`)
-- **Frontier Model**:  
-  **{clean_frontier_name}** (`{selected_frontier_model}`)
-""")
+st.sidebar.markdown("### 📋 Active Configuration")
+
+if chat_mode in ["Simultaneous (Both Models)", "Open Source (OSS) Only"]:
+    st.sidebar.markdown(f"- **OSS Model**:  \n  **{clean_oss_name}** (`{selected_oss_model}`)")
+    
+if chat_mode in ["Simultaneous (Both Models)", "Frontier Only"]:
+    st.sidebar.markdown(f"- **Frontier Model**:  \n  **{clean_frontier_name}** (`{selected_frontier_model}`)")
 
 # Create Tabs for the main view
 tab1, tab2, tab3 = st.tabs(["💬 Chat Arena", "📊 Evaluation Dashboard", "💡 Methodology & Insights"])
