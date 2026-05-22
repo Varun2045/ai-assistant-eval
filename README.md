@@ -19,8 +19,8 @@
 
 <br>
 
-**[🦙 Try the Qwen OSS Assistant Here!](#)**  
-*(Replace the link above with your Hugging Face Space URL after running deploy_hf.py)*
+**[🦙 Try the Qwen OSS Assistant Here!](https://huggingface.co/spaces/VD09/qwen-assistant)**  
+*(Hosted on Hugging Face Spaces)*
 
 </div>
 
